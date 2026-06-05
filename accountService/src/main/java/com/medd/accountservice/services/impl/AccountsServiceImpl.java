@@ -35,8 +35,15 @@ public class AccountsServiceImpl implements AccountsService {
         // Save customer if provided
         Customer customer = null;
         if (accountsDTO.getCustomer() != null) {
-            customer = customerMapper.toCustomer(accountsDTO.getCustomer());
-            customer = customerRepository.save(customer);
+            // Check if a customer with same name and mobile number already exists
+            var customerDto = accountsDTO.getCustomer();
+            var existing = customerRepository.findByNameAndMobileNumber(customerDto.getName(), customerDto.getMobileNumber());
+            if (existing.isPresent()) {
+                customer = existing.get();
+            } else {
+                customer = customerMapper.toCustomer(customerDto);
+                customer = customerRepository.save(customer);
+            }
         }
 
         // Generate unique 16-digit account number (like a credit card)
