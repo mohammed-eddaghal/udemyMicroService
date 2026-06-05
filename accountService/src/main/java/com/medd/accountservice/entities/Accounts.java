@@ -19,7 +19,7 @@ public class Accounts extends BaseEntity {
     @Column(name = "account_number")
     private Long accountNumber;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id", nullable = false)
     private Customer customer;
 

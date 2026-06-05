@@ -15,6 +15,7 @@ import com.medd.accountservice.mappers.CustomerMapper;
 import com.medd.accountservice.repositories.AccountsRepository;
 import com.medd.accountservice.repositories.CustomerRepository;
 import com.medd.accountservice.services.AccountsService;
+import com.medd.accountservice.exception.AccountAlreadyExistsException;
 
 @Service
 @AllArgsConstructor
@@ -32,6 +33,12 @@ public class AccountsServiceImpl implements AccountsService {
     @Override
     @Transactional
     public AccountResponseDto saveNewAccount(AccountsDTO accountsDTO) {
+
+        // Check if account already exists (by accountNumber) and fail fast
+        if (accountsRepository.existsByAccountNumber(accountsDTO.getAccountNumber())) {
+            throw new AccountAlreadyExistsException("Account with number " + accountsMapper.maskAccountNumber(accountsDTO.getAccountNumber()) + " already exists");
+        }
+
         // Save customer if provided
         Customer customer = null;
         if (accountsDTO.getCustomer() != null) {
@@ -49,12 +56,12 @@ public class AccountsServiceImpl implements AccountsService {
         // Generate unique 16-digit account number (like a credit card)
         Long uniqueAccountNumber = generateUniqueAccountNumber();
 
-        // Create account with hardcoded VISA type and Rabat branch address
         Accounts account = new Accounts();
         account.setAccountNumber(uniqueAccountNumber);
         account.setAccountType(accountsDTO.getAccountType());
         account.setBranchAddress(accountsDTO.getBranchAddress());
         account.setCustomer(customer);
+
 
         // Save account
         Accounts savedAccount = accountsRepository.save(account);

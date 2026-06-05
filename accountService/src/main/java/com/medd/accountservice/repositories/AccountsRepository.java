@@ -7,5 +7,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccountsRepository extends JpaRepository<Accounts, Long> {
 
+	/**
+	 * Returns true if an account with the given accountNumber exists.
+	 */
+	boolean existsByAccountNumber(Long accountNumber);
+
 }
 
