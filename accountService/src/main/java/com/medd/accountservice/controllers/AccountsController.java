@@ -1,13 +1,10 @@
 package com.medd.accountservice.controllers;
 
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.medd.accountservice.dto.AccountResponseDto;
 import com.medd.accountservice.dto.AccountsDTO;
@@ -30,6 +27,12 @@ public class AccountsController {
 	public ResponseEntity<AccountResponseDto> saveNewAccount(@RequestBody AccountsDTO accountsDTO) {
 		AccountResponseDto savedAccountResponse = accountsService.saveNewAccount(accountsDTO);
 		return new ResponseEntity<>(savedAccountResponse, HttpStatus.CREATED);
+	}
+
+	@GetMapping
+	public ResponseEntity<AccountResponseDto> getAccountDetails(@RequestParam Long accountNumber) {
+		AccountResponseDto accountResponse = accountsService.getAccountDetails(accountNumber);
+		return new ResponseEntity<>(accountResponse, HttpStatus.OK);
 	}
 
 

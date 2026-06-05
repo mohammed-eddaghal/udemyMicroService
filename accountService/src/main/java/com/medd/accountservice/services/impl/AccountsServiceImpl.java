@@ -2,6 +2,7 @@ package com.medd.accountservice.services.impl;
 
 import java.util.Random;
 
+import com.medd.accountservice.exception.ResourceNotExistsException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,6 +70,14 @@ public class AccountsServiceImpl implements AccountsService {
         // Convert to AccountsDTO first, then map to AccountResponseDto with masked account number
         AccountsDTO accountsDTO_result = accountsMapper.toAccountsDTO(savedAccount);
         return accountsMapper.toAccountResponse(accountsDTO_result);
+    }
+
+    @Override
+    public AccountResponseDto getAccountDetails(Long accountNumber) {
+        Accounts accounts = accountsRepository.findByAccountNumber(accountNumber).orElseThrow(
+                () -> new ResourceNotExistsException("Account with number " + accountsMapper.maskAccountNumber(accountNumber) + " not found")
+        );
+        return accountsMapper.toAccountResponse(accountsMapper.toAccountsDTO(accounts));
     }
 
     /**

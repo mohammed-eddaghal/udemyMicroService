@@ -16,5 +16,11 @@ public class GlobalExceptionHandler {
                 .body(Map.of("error", "Account already exists", "message", ex.getMessage()));
     }
 
+    @ExceptionHandler(ResourceNotExistsException.class)
+    public ResponseEntity<Map<String, String>> handleAccountNotExists(ResourceNotExistsException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error", "Resource Not exist", "message", ex.getMessage()));
+    }
+
 }
 

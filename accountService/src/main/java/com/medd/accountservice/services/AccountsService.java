@@ -15,5 +15,7 @@ public interface AccountsService {
      */
     AccountResponseDto saveNewAccount(AccountsDTO accountsDTO);
 
+
+    AccountResponseDto getAccountDetails(Long accountNumber);
 }
 
