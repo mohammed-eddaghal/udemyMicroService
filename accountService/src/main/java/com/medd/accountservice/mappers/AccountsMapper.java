@@ -1,5 +1,6 @@
 package com.medd.accountservice.mappers;
 
+import com.medd.accountservice.dto.AccountsUpdateDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -31,6 +32,7 @@ public interface AccountsMapper {
     @Mapping(target = "accountNumber", source = "accountNumber", qualifiedByName = "maskAccountNumber")
     AccountResponseDto toAccountResponse(AccountsDTO accountsDTO);
 
+    AccountsDTO toAccountsDto(AccountsUpdateDTO accountsUpdateDTO);
     /**
      * Mask account number to show only last 4 digits.
      * Example: 1234567890123456 becomes **** **** **** 3456

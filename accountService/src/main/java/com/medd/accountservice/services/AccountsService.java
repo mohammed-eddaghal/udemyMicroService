@@ -2,6 +2,7 @@ package com.medd.accountservice.services;
 
 import com.medd.accountservice.dto.AccountResponseDto;
 import com.medd.accountservice.dto.AccountsDTO;
+import com.medd.accountservice.dto.AccountsUpdateDTO;
 
 public interface AccountsService {
 
@@ -17,5 +18,7 @@ public interface AccountsService {
 
 
     AccountResponseDto getAccountDetails(Long accountNumber);
+
+    AccountResponseDto updateAccount(AccountsUpdateDTO accountsDTO, Long accountNumber);
 }
 

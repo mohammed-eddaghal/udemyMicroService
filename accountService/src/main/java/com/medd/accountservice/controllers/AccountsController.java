@@ -1,5 +1,6 @@
 package com.medd.accountservice.controllers;
 
+import com.medd.accountservice.dto.AccountsUpdateDTO;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,12 @@ public class AccountsController {
 	public ResponseEntity<AccountResponseDto> getAccountDetails(@RequestParam Long accountNumber) {
 		AccountResponseDto accountResponse = accountsService.getAccountDetails(accountNumber);
 		return new ResponseEntity<>(accountResponse, HttpStatus.OK);
+	}
+
+	@PutMapping
+	public ResponseEntity<AccountResponseDto> updateAccount(@RequestBody AccountsUpdateDTO accountsDTO, @RequestParam Long accountNumber) {
+		AccountResponseDto updatedAccountResponse = accountsService.updateAccount(accountsDTO, accountNumber);
+		return new ResponseEntity<>(updatedAccountResponse, HttpStatus.OK);
 	}
 
 

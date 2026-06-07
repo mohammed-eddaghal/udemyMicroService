@@ -2,6 +2,7 @@ package com.medd.accountservice.services.impl;
 
 import java.util.Random;
 
+import com.medd.accountservice.dto.AccountsUpdateDTO;
 import com.medd.accountservice.exception.ResourceNotExistsException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -78,6 +79,24 @@ public class AccountsServiceImpl implements AccountsService {
                 () -> new ResourceNotExistsException("Account with number " + accountsMapper.maskAccountNumber(accountNumber) + " not found")
         );
         return accountsMapper.toAccountResponse(accountsMapper.toAccountsDTO(accounts));
+    }
+
+    /**
+     * method to modify data of an account; it is not accepted to modify account number
+     * @param accountNumber the account number of account we want to update
+     * @param accountsDTO the new data of the account we want to update
+     * @return accountResponse with new data updated
+     */
+    @Override
+    public AccountResponseDto updateAccount(AccountsUpdateDTO accountsDTO, Long accountNumber) {
+        Accounts account = accountsRepository.findByAccountNumber(accountNumber).orElseThrow(
+                () -> new ResourceNotExistsException("Account with number " + accountsMapper.maskAccountNumber(accountNumber) + " not found")
+        );
+        Accounts accountToModify = accountsMapper.toAccounts(accountsMapper.toAccountsDto(accountsDTO));
+        accountToModify.setAccountNumber(accountNumber);
+        accountToModify.setCustomer(account.getCustomer());
+        Accounts save = accountsRepository.save(accountToModify);
+        return accountsMapper.toAccountResponse(accountsMapper.toAccountsDTO(save));
     }
 
     /**
